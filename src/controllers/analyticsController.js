@@ -92,12 +92,53 @@ exports.getStats = async (req, res) => {
              ORDER BY count DESC
         `, [id]);
 
+        const utmSourceStats = await db.query(`
+             SELECT utm_source as name, COUNT(*) as count
+             FROM url_analytics
+             WHERE url_id = $1 AND utm_source IS NOT NULL AND utm_source != ''
+             GROUP BY utm_source
+             ORDER BY count DESC
+             LIMIT 10
+        `, [id]);
+
+        const utmMediumStats = await db.query(`
+             SELECT utm_medium as name, COUNT(*) as count
+             FROM url_analytics
+             WHERE url_id = $1 AND utm_medium IS NOT NULL AND utm_medium != ''
+             GROUP BY utm_medium
+             ORDER BY count DESC
+             LIMIT 10
+        `, [id]);
+
+        const utmCampaignStats = await db.query(`
+             SELECT utm_campaign as name, COUNT(*) as count
+             FROM url_analytics
+             WHERE url_id = $1 AND utm_campaign IS NOT NULL AND utm_campaign != ''
+             GROUP BY utm_campaign
+             ORDER BY count DESC
+             LIMIT 10
+        `, [id]);
+
+        const uniqueStats = await db.query(`
+             SELECT COUNT(*) FILTER (WHERE is_unique = true) as unique_clicks
+             FROM url_analytics
+             WHERE url_id = $1
+        `, [id]);
+
         res.json({
-            summary: stats.rows[0],
+            summary: {
+                ...stats.rows[0],
+                unique_clicks: uniqueStats.rows[0]?.unique_clicks || 0
+            },
             timeSeries: timeSeries.rows,
             geo: geoStats.rows,
             devices: deviceStats.rows,
-            os: osStats.rows
+            os: osStats.rows,
+            utm: {
+                sources: utmSourceStats.rows,
+                mediums: utmMediumStats.rows,
+                campaigns: utmCampaignStats.rows,
+            }
         });
     } catch (err) {
         console.error(err);
