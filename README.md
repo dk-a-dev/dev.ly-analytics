@@ -4,7 +4,7 @@ The analytics microservice for **dev.ly**. Ingests click events, enriches them w
 
 ---
 
-## ✨ Features
+## Features
 
 - **Click Ingestion** — Accepts raw click events via REST or BullMQ queue
 - **Data Enrichment** — Extracts browser, OS, and device type from User-Agent (ua-parser-js)
@@ -16,7 +16,7 @@ The analytics microservice for **dev.ly**. Ingests click events, enriches them w
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Technology | Purpose |
 |---|---|
@@ -30,7 +30,7 @@ The analytics microservice for **dev.ly**. Ingests click events, enriches them w
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 analytics/
@@ -55,7 +55,7 @@ analytics/
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
@@ -91,7 +91,7 @@ Each click is enriched before storage:
 
 ---
 
-## ⚙️ Worker Pipeline
+## Worker Pipeline
 
 The BullMQ worker (`src/workers/worker.js`) runs as a separate process:
 
@@ -119,7 +119,7 @@ docker-compose up worker
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -159,7 +159,7 @@ REDIS_URL=redis://localhost:6379
 
 ---
 
-## 🔗 Related Repos
+## Related Repos
 
 | Repo | Description |
 |---|---|
